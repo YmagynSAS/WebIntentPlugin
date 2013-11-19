@@ -1,5 +1,6 @@
 package org.apache.cordova.webintent;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.Html;
 import org.apache.cordova.PluginResult;
 public class WebIntent extends CordovaPlugin {
@@ -60,7 +62,16 @@ public class WebIntent extends CordovaPlugin {
 				pr =  new PluginResult(PluginResult.Status.OK, i.hasExtra(extraName));
 				callbackContext.sendPluginResult(pr);
 				return true;
-
+			}
+				
+			else if(action.equals("openPDF")){
+				String filename = args.getString(0);
+				File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+'/'+filename);
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				this.cordova.getActivity().startActivity(intent);
+				
 			} else if (action.equals("getExtra")) {
 				if (args.length() != 1) {
 					pr = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -178,7 +189,7 @@ public class WebIntent extends CordovaPlugin {
 				i.putExtra(key, value);
 			}
 		}
-		((DroidGap)this.cordova.getActivity()).startActivity(i);
+		this.cordova.getActivity().startActivity(i);
 	}
 
 	void sendBroadcast(String action, Map<String, String> extras) {
