@@ -1,5 +1,4 @@
-cordova.define("org.apache.cordova.webintent.WebIntent.WebIntent", function(require, exports, module) {    
-	function WebIntent(){
+ 	function WebIntent(){
     };
 
     WebIntent.prototype.ACTION_SEND = "android.content.Intent.ACTION_SEND";
@@ -76,4 +75,4 @@ cordova.define("org.apache.cordova.webintent.WebIntent.WebIntent", function(requ
 		   };
 		   
 		   window.plugins.webintent = new WebIntent();
-	});});
+	});
